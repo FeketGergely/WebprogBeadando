@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web-programozás-1 Házi feladat</title>
+    <style>
+        #drag1 {
+            width: 100px;
+            height: 100px;
+            background-color: red;
+            margin: 10px;
+        }
+        #div1 {
+            width: 200px;
+            height: 200px;
+            border: 1px solid black;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        nav {
+            background-color: #333;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav ul li {
+            margin: 0 10px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            display: block;
+        }
+
+        nav ul li a.active, nav ul li a:hover {
+            background-color: #4CAF50;
+        }
+
+        #content {
+            padding: 20px;
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            cursor: pointer;
+        }
+
+        input[type="text"], input[type="number"] {
+            padding: 10px;
+            margin-bottom: 10px;
+            margin-right: 10px;
+            width: 200px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .error {
+            color: red;
+            font-size: 12px;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+
+        canvas, svg {
+            border: 1px solid black;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .box {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Web-programozás-1 Előadás Házi feladat</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="index.html" class="active">Főoldal</a></li>
+            <li><a href="table.html">Táblázat</a></li>
+            <li><a href="html5.html">HTML5 Példák</a></li>
+            <li><a href="chartjs.html">ChartJS</a></li>
+            <li><a href="ajax.html">AJAX</a></li>
+            <li><a href="oojs.html">OOJS</a></li>
+            <li><a href="react.html">React</a></li>
+        </ul>
+    </nav>
+
+    <h2>Web Storage Példa</h2>
+    <label for="name">Név:</label>
+    <input type="text" id="name" placeholder="Írd be a neved">
+    <button onclick="saveName()">Mentés</button>
+    <button onclick="loadName()">Betöltés</button>
+    <p id="greeting"></p>
+
+    <h2>Web Workers Példa</h2>
+    <button id="startBtn">Indítás</button>
+    <button id="stopBtn" disabled>Leállítás</button>
+    <div id="counter">0</div>
+    <div id="result"></div>
+
+    <h2>Server-Sent Events Példa</h2>
+    <button onclick="startSSE()">Indítás</button>
+    <div id="sseData">Várakozás az adatra...</div>
+
+    <h2>Geolocation API Példa</h2>
+    <button onclick="getLocation()">Helyzet lekérdezése</button>
+    <p id="location"></p>
+
+    <h2>Drag and Drop API Példa</h2>
+    <div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+    <div id="drag1" draggable="true" ondragstart="drag(event)"></div>
+
+    <h2>Rajzolj a Canvas-ra!</h2>
+    <canvas id="canvas" width="600" height="400"></canvas><br>
+    <button onclick="clearCanvas()">Törlés</button>
+
+    <h2>SVG Példa</h2>
+    <input type="range" id="zoomSlider" min="0.5" max="5" step="0.1" value="1">
+    <br><br>
+    <div class="container">
+        <div class="box">
+            <h3>SVG Kép</h3>
+            <svg id="svgImage" width="300" height="200">
+                <circle cx="100" cy="100" r="50" fill="red" stroke="black" stroke-width="3"/>
+                <rect x="150" y="50" width="100" height="100" fill="blue" stroke="black" stroke-width="3"/>
+                <line x1="10" y1="10" x2="200" y2="150" stroke="green" stroke-width="4"/>
+                <text x="50" y="180" font-size="20" fill="black">Ez egy SVG példa</text>
+            </svg>
+        </div>
+        <div class="box">
+            <h3>Canvas Kép</h3>
+            <canvas id="canvasImage" width="300" height="200"></canvas>
+        </div>
+    </div>
+
+    <footer>
+        <p>Elkészítette: Fekete Gergely | Neptun kód: E3Y118</p>
+    </footer>
+
+    <script>
+        // Web Storage
+        function saveName() {
+            const name = document.getElementById('name').value;
+            localStorage.setItem('userName', name);
+            alert('Név mentve!');
+        }
+
+        function loadName() {
+            const name = localStorage.getItem('userName');
+            if (name) {
+                document.getElementById('greeting').textContent = `Üdv, ${name}!`;
+            } else {
+                alert('Nincs mentett név.');
+            }
+        }
+
+        // Web Worker
+        let worker;
+        let counterValue = 0;
+
+        document.getElementById("startBtn").addEventListener("click", function() {
+            if (!worker) {
+                worker = new Worker('worker.js');
+                worker.onmessage = function(event) {
+                    counterValue = event.data;
+                    document.getElementById("counter").textContent = counterValue;
+                };
+                worker.postMessage('start');
+            }
+            document.getElementById("startBtn").disabled = true;
+            document.getElementById("stopBtn").disabled = false;
+            document.getElementById("result").textContent = '';
+        });
+
+        document.getElementById("stopBtn").addEventListener("click", function() {
+            if (worker) {
+                worker.terminate();
+                worker = null;
+            }
+            document.getElementById("result").textContent = "A számláló értéke: " + counterValue;
+            document.getElementById("startBtn").disabled = false;
+            document.getElementById("stopBtn").disabled = true;
+        });
+
+        // Server-Sent Events
+        let eventSource;
+        function startSSE() {
+            if (typeof(EventSource) !== "undefined") {
+                if (!eventSource) {
+                    eventSource = new EventSource("serverevents2.php");
+                    eventSource.onmessage = function(event) {
+                        document.getElementById("sseData").innerHTML = "Szerver üzenete: " + event.data;
+                    };
+                }
+            } else {
+                document.getElementById("sseData").innerHTML = "A böngésződ nem támogatja a Server-Sent Events-et.";
+            }
+        }
+
+        // Geolocation
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                document.getElementById("location").innerText = "Geolocation is not supported by this browser.";
+            }
+        }
+
+        function showPosition(position) {
+            document.getElementById("location").innerText = "Latitude: " + position.coords.latitude + 
+                " Longitude: " + position.coords.longitude;
+        }
+
+        // Drag and Drop
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+
+        function drop(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            ev.target.appendChild(document.getElementById(data));
+        }
+
+        // Canvas rajzolás
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d");
+        let drawing = false;
+
+        canvas.addEventListener("mousedown", () => drawing = true);
+        canvas.addEventListener("mouseup", () => drawing = false);
+        canvas.addEventListener("mousemove", draw);
+
+        function draw(event) {
+            if (!drawing) return;
+            ctx.lineWidth = 5;
+            ctx.lineCap = "round";
+            ctx.strokeStyle = "black";
+            ctx.lineTo(event.offsetX, event.offsetY);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(event.offsetX, event.offsetY);
+        }
+
+        function clearCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        // Canvas másolat (SVG mintára)
+        const slider = document.getElementById("zoomSlider");
+        const svg = document.getElementById("svgImage");
+        const canvas2 = document.getElementById("canvasImage");
+        const ctx2 = canvas2.getContext("2d");
+
+        function drawCanvas() {
+            ctx2.clearRect(0, 0, canvas2.width, canvas2.height);
+            ctx2.beginPath();
+            ctx2.arc(100, 100, 50, 0, Math.PI * 2);
+            ctx2.fillStyle = "red";
+            ctx2.fill();
+            ctx2.strokeStyle = "black";
+            ctx2.lineWidth = 3;
+            ctx2.stroke();
+
+            ctx2.fillStyle = "blue";
+            ctx2.fillRect(150, 50, 100, 100);
+            ctx2.strokeRect(150, 50, 100, 100);
+
+            ctx2.beginPath();
+            ctx2.moveTo(10, 10);
+            ctx2.lineTo(200, 150);
+            ctx2.strokeStyle = "green";
+            ctx2.lineWidth = 4;
+            ctx2.stroke();
+
+            ctx2.font = "20px Arial";
+            ctx2.fillStyle = "black";
+            ctx2.fillText("Ez egy Canvas példa", 50, 180);
+        }
+        drawCanvas();
+
+        slider.addEventListener("input", () => {
+            const scale = slider.value;
+            svg.style.transform = `scale(${scale})`;
+            canvas2.style.transform = `scale(${scale})`;
+        });
+    </script>
+</body>
+</html>

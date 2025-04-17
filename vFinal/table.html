@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Táblázat</title>
+<style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+
+        nav {
+            background-color: #333;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav ul li {
+            margin: 0 10px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            display: block;
+        }
+
+        nav ul li a.active, nav ul li a:hover {
+            background-color: #4CAF50;
+        }
+
+         #content {
+            padding: 20px;
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            cursor: pointer;
+        }
+
+        input[type="text"], input[type="number"] {
+            padding: 10px;
+            margin-bottom: 10px;
+            margin-right: 10px;
+            width: 200px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .error {
+            color: red;
+            font-size: 12px;
+        }
+
+       footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+    
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Web-programozás-1 Előadás Házi feladat</h1>
+    </header>
+    
+    <nav>
+        <ul>
+            <li><a href="index.html">Főoldal</a></li>
+            <li><a href="table.html" class="active">Táblázat</a></li>
+            <li><a href="html5.html">HTML5 Példák</a></li>
+            <li><a href="chartjs.html">ChartJS</a></li>
+            <li><a href="ajax.html">AJAX</a></li>
+            <li><a href="oojs.html">OOJS</a></li>
+            <li><a href="react.html">React</a></li>
+        </ul>
+    </nav>
+    
+    <div id="content">
+        <h2>CRUD Táblázat</h2>
+
+        <!-- Szűrési mező -->
+        <input type="text" id="searchInput" placeholder="Szűrés...">
+
+        <table id="dataTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Név</th>
+                    <th>Kor</th>
+                    <th>Cím</th>
+                    <th>Telefon</th>
+                    <th>Műveletek</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Ide kerülnek a dinamikus adatok -->
+            </tbody>
+        </table>
+
+        <h2>Adat hozzáadása</h2>
+        <form id="crudForm">
+            <input type="number" id="idInput" placeholder="ID" required>
+            <input type="text" id="nameInput" placeholder="Név" required minlength="2" maxlength="50">
+            <input type="number" id="ageInput" placeholder="Kor" required min="1" max="120">
+            <input type="text" id="cityInput" placeholder="Város" required minlength="2" maxlength="50">
+            <input type="text" id="phoneInput" placeholder="Telefon">
+            <button type="submit">Új sor hozzáadása</button>
+        </form>
+        <div id="errorMessages" class="error"></div>
+    </div>
+    
+    <footer>
+        <p>Elkészítette: Fekete Gergely | Neptun kód: E3Y118</p>
+    </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.querySelector("#crudForm");
+            const tableBody = document.querySelector("#dataTable tbody");
+            const errorMessages = document.querySelector("#errorMessages");
+
+            form.addEventListener("submit", function (event) {
+                event.preventDefault();
+                console.log("Form submitted");  // Ellenőrzés
+
+                const id = document.querySelector("#idInput").value;
+                const name = document.querySelector("#nameInput").value;
+                const age = document.querySelector("#ageInput").value;
+                const city = document.querySelector("#cityInput").value;
+                const phone = document.querySelector("#phoneInput").value;
+
+                errorMessages.innerHTML = "";
+                let valid = true;
+
+                if (name.length < 2 || name.length > 50) {
+                    valid = false;
+                    errorMessages.innerHTML += "<p>A név hossza 2 és 50 karakter között kell legyen.</p>";
+                }
+                if (age < 1 || age > 120) {
+                    valid = false;
+                    errorMessages.innerHTML += "<p>A kor 1 és 120 között kell legyen.</p>";
+                }
+                if (city.length < 2 || city.length > 50) {
+                    valid = false;
+                    errorMessages.innerHTML += "<p>A város hossza 2 és 50 karakter között kell legyen.</p>";
+                }
+                if (!phone.match(/^\d{11}$/)) {
+                    valid = false;
+                    errorMessages.innerHTML += "<p>A telefon számnak 10 számjegyűnek kell lennie.</p>";
+                }
+
+                if (!valid) return;
+
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${id}</td>
+                    <td>${name}</td>
+                    <td>${age}</td>
+                    <td>${city}</td>
+                    <td>${phone}</td>
+                    <td>
+                        <button class="editBtn">Szerkesztés</button>
+                        <button class="deleteBtn">Törlés</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+                form.reset();
+
+                row.querySelector(".deleteBtn").addEventListener("click", function () {
+                    row.remove();
+                });
+
+                row.querySelector(".editBtn").addEventListener("click", function () {
+                    document.querySelector("#idInput").value = id;
+                    document.querySelector("#nameInput").value = name;
+                    document.querySelector("#ageInput").value = age;
+                    document.querySelector("#cityInput").value = city;
+                    document.querySelector("#phoneInput").value = phone;
+                    row.remove();
+                });
+            });
+
+            document.getElementById("searchInput").addEventListener("input", function () {
+                const filter = this.value.toLowerCase();
+                const rows = document.querySelectorAll("#dataTable tbody tr");
+
+                rows.forEach(row => {
+                    const cells = row.querySelectorAll("td");
+                    const match = Array.from(cells).some(cell => cell.innerText.toLowerCase().includes(filter));
+                    row.style.display = match ? "" : "none";
+                });
+            });
+
+            function sortTable(columnIndex) {
+                const table = document.getElementById("dataTable");
+                const rows = Array.from(table.rows).slice(1);
+                const sortedRows = rows.sort((rowA, rowB) => {
+                    const cellA = rowA.cells[columnIndex].innerText;
+                    const cellB = rowB.cells[columnIndex].innerText;
+
+                    return cellA.localeCompare(cellB);
+                });
+
+                sortedRows.forEach(row => table.appendChild(row));
+            }
+
+            const headers = document.querySelectorAll("#dataTable th");
+            headers.forEach((header, index) => {
+                header.addEventListener("click", () => sortTable(index));
+            });
+        });
+    </script>
+</body>
+</html>

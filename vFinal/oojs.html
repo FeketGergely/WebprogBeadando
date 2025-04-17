@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web-programozás-1 Házi feladat</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        nav {
+            background-color: #333;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav ul li {
+            margin: 0 10px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            display: block;
+        }
+
+        nav ul li a.active, nav ul li a:hover {
+            background-color: #4CAF50;
+        }
+
+        #content {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .menu {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin: 20px auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            background-color: #fff;
+            border-radius: 8px;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        button {
+            padding: 10px 15px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #score {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+          footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+   <header>
+        <h1>Web-programozás-1 Előadás Házi feladat</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="index.html" class="active">Főoldal</a></li>
+            <li><a href="table.html">Táblázat</a></li>
+            <li><a href="html5.html">HTML5 Példák</a></li>
+            <li><a href="chartjs.html">ChartJS</a></li>
+            <li><a href="ajax.html">AJAX</a></li>
+            <li><a href="oojs.html">OOJS</a></li>
+            <li><a href="react.html">React</a></li>
+        </ul>
+    </nav>
+
+    <div id="content">
+        <h1>OOJS Menü</h1>
+        <div id="menu-container"></div>
+    </div>
+
+    <footer>
+        Elkészítette: Feladat Cégény | Neptun kód: EYH118
+    </footer>
+
+    <script>
+        class Menu {
+            constructor(title) {
+                this.title = title;
+                this.score = 0;
+                this.container = document.createElement("div");
+                this.container.className = "menu";
+                this.container.innerHTML = `<h2>${this.title}</h2><div class="button-container"></div><div id="score">Pontszám: 0</div>`;
+                document.getElementById("menu-container").appendChild(this.container);
+            }
+
+            addButton(label, points) {
+                const button = document.createElement("button");
+                button.innerText = label;
+                button.onclick = () => this.addPoints(points);
+                this.container.querySelector(".button-container").appendChild(button);
+            }
+
+            addPoints(points) {
+                this.score += points;
+                this.container.querySelector("#score").innerText = `Pontszám: ${this.score}`;
+                alert(`+${points} pont!`);
+            }
+        }
+
+        class SpecialMenu extends Menu {
+            constructor(title, bonus) {
+                super(title);
+                this.bonus = bonus;
+            }
+        }
+
+        const myMenu = new SpecialMenu("Főmenü", 5);
+        myMenu.addButton("+1 pont a beadandóra", 1);
+        myMenu.addButton("+4 pont a beadandóra", 4);
+        myMenu.addButton("+3 pont a beadandóra", 3);
+        myMenu.addButton("+7 pont a beadandóra", 7);
+        myMenu.addButton("+15 pont a beadandóra", 15);
+    </script>
+</body>
+</html>

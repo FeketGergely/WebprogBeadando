@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="ajax.js?v=1.2126"></script>
+    <title>AJAX Alkalmazás</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        nav {
+            background-color: #333;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav ul li {
+            margin: 0 10px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            display: block;
+        }
+
+        nav ul li a.active, nav ul li a:hover {
+            background-color: #4CAF50;
+        }
+
+        #content {
+            padding: 20px;
+            text-align: center;
+        }
+
+       footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: relative; /* Módosítva fixed-ről relative-re */
+    width: 100%;
+    bottom: 0;
+}
+
+        /* Módosított CSS */
+        .actionDiv {
+            display: inline-block;
+            width: 30%;
+            padding: 10px;
+            margin: 10px;
+            vertical-align: top;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Web-programozás-1 Előadás Házi feladat</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="index.html" class="active">Főoldal</a></li>
+            <li><a href="table.html">Táblázat</a></li>
+            <li><a href="html5.html">HTML5 Példák</a></li>
+            <li><a href="chartjs.html">ChartJS</a></li>
+            <li><a href="ajax.html">AJAX</a></li>
+            <li><a href="oojs.html">OOJS</a></li>
+            <li><a href="react.html">React</a></li>
+        </ul>
+    </nav>
+    <h1>API AJAX Alkalmazás</h1>
+
+    <div id='code'></div>
+
+    <div id='readDiv'></div>
+
+    <div class="actionDiv" id='createDiv'>
+        <h1>Create</h1>
+        Name (required, max 30): <input id="name1" type="text"><br>
+        Height (required, max 30): <input id="height1" type="text"><br>
+        Weight (required, max 30): <input id="weight1" type="text"><br>
+        <button type="submit" onclick="create();">Create</button><br>
+        <div id='createResult'></div>
+    </div>
+
+    <div class="actionDiv" id='updateDiv'>
+        <h1>Update</h1>
+        ID (required): <input id="idUpd" type="text"><br> 
+        <button type="submit" onclick="getDataForId();">getDataForId</button><br>
+        Name (required, max 30): <input id="name2" type="text"><br>
+        Height (required, max 30): <input id="height2" type="text"><br>
+        Weight (required, max 30): <input id="weight2" type="text"><br>
+        <button type="submit" onclick="update();">Update</button><br>
+        <div id='updateResult'></div>      
+    </div> 
+
+    <div class="actionDiv" id='deleteDiv'>
+        <h1>Delete</h1>
+        ID (required): <input id="idDel" type="text"><br> 
+        <button type="submit" onclick="deleteF();">Delete</button><br>
+        <div id='deleteResult'></div>      
+    </div> 
+
+    <footer>
+        <p>Elkészítette: Fekete Gergely | Neptun kód: E3Y118</p>
+    </footer>
+</body>
+</html>
